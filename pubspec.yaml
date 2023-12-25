@@ -62,11 +62,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/chores
-    - assets/images/dates
-    - assets/images/restaurants
-    - assets/images/streaming_services
-    - assets/images/ui
+    - assets/images/chores/
+    - assets/images/dates/
+    - assets/images/restaurants/
+    - assets/images/streaming_services/
+    - assets/images/ui/
     - assets/sounds/
 
   # An image asset can refer to one or more resolution-specific "variants", see
