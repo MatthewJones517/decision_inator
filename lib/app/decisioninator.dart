@@ -10,19 +10,30 @@ class Decisioninator extends FlameGame {
   @override
   FutureOr<void> onLoad() async {
     addAll([
-      DecisionatorOption(optionImage: Assets.applebees, order: 0),
-      DecisionatorOption(optionImage: Assets.chipotle, order: 1),
-      DecisionatorOption(optionImage: Assets.crackerBarrel, order: 2),
-      DecisionatorOption(optionImage: Assets.dominos, order: 3),
-      DecisionatorOption(optionImage: Assets.ihop, order: 4),
-      DecisionatorOption(optionImage: Assets.kfc, order: 5),
-      DecisionatorOption(optionImage: Assets.mcdonalds, order: 6),
-      DecisionatorOption(optionImage: Assets.oliveGarden, order: 7),
-      DecisionatorOption(optionImage: Assets.outback, order: 8),
-      DecisionatorOption(optionImage: Assets.paneraBread, order: 9),
-      DecisionatorOption(optionImage: Assets.subway, order: 10),
-      DecisionatorOption(optionImage: Assets.tacoBell, order: 11),
-      DecisionatorOption(optionImage: Assets.texasRoadhouse, order: 12),
+      DecisionatorOption(
+          optionImage: Assets.applebees, order: 0, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.chipotle, order: 1, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.crackerBarrel, order: 2, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.dominos, order: 3, totalOptions: 13),
+      DecisionatorOption(optionImage: Assets.ihop, order: 4, totalOptions: 13),
+      DecisionatorOption(optionImage: Assets.kfc, order: 5, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.mcdonalds, order: 6, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.oliveGarden, order: 7, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.outback, order: 8, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.paneraBread, order: 9, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.subway, order: 10, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.tacoBell, order: 11, totalOptions: 13),
+      DecisionatorOption(
+          optionImage: Assets.texasRoadhouse, order: 12, totalOptions: 13),
     ]);
   }
 }
