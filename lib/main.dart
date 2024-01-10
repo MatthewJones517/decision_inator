@@ -8,7 +8,6 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   WidgetsFlutterBinding.ensureInitialized();
-  await Flame.device.fullScreen();
 
   final app = Decisioninator();
   runApp(
