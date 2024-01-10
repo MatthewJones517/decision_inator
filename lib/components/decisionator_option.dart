@@ -18,6 +18,7 @@ class DecisionatorOption extends SpriteComponent
   Future<void> onLoad() async {
     final image = await Flame.images.load(optionImage);
     size = Vector2(480, 150);
+    position.y = order * 150;
     sprite = Sprite(image);
     add(RectangleHitbox());
   }
