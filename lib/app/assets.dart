@@ -1,4 +1,8 @@
 class Assets {
+  // UI
+  static const frame = 'ui/frame.png';
+
+  // Restaurants
   static const applebees = 'restaurants/Applebees.png';
   static const chipotle = 'restaurants/Chipotle.png';
   static const crackerBarrel = 'restaurants/Cracker_Barrel.png';

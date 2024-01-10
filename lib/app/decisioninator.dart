@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:decision_inator/app/assets.dart';
 import 'package:decision_inator/components/decisionator_option.dart';
+import 'package:decision_inator/components/frame.dart';
 import 'package:flame/game.dart';
 
 class Decisioninator extends FlameGame {
@@ -34,6 +35,7 @@ class Decisioninator extends FlameGame {
           optionImage: Assets.tacoBell, order: 11, totalOptions: 13),
       DecisionatorOption(
           optionImage: Assets.texasRoadhouse, order: 12, totalOptions: 13),
+      Frame(),
     ]);
   }
 }

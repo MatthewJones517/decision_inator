@@ -20,8 +20,9 @@ class DecisionatorOption extends SpriteComponent
   @override
   Future<void> onLoad() async {
     final image = await Flame.images.load(optionImage);
-    size = Vector2(480, 150);
-    position.y = (order * 150) - 150;
+    size = Vector2(390, 122);
+    position.y = (order * 122) - 122;
+    position.x = 45;
     sprite = Sprite(image);
     add(RectangleHitbox());
   }
@@ -33,7 +34,7 @@ class DecisionatorOption extends SpriteComponent
     final screenRect = Rect.fromLTWH(0, 0, game.size.x, game.size.y);
 
     if (position.y > screenRect.bottom) {
-      position.y -= 150 * totalOptions;
+      position.y -= 122 * totalOptions;
     }
   }
 }
