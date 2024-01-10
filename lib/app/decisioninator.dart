@@ -38,4 +38,9 @@ class Decisioninator extends FlameGame {
       Frame(),
     ]);
   }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+  }
 }
