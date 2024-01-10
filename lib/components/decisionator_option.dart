@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
+import '../app/configuration.dart';
 import '../app/decisioninator.dart';
 
 class DecisionatorOption extends SpriteComponent
@@ -19,5 +20,11 @@ class DecisionatorOption extends SpriteComponent
     size = Vector2(480, 150);
     sprite = Sprite(image);
     add(RectangleHitbox());
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    position.y += Configuration.attractorSpeed * dt;
   }
 }
