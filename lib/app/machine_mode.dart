@@ -1,4 +1,4 @@
-enum Mode {
+enum MachineMode {
   chores,
   dates,
   dinner,
