@@ -6,13 +6,11 @@ import 'package:flame/game.dart';
 import '../components/decisionator_option.dart';
 import '../components/frame.dart';
 import 'assets.dart';
-import 'machine_mode.dart';
 import 'machine_state.dart';
 
 class Decisioninator extends FlameGame {
   Decisioninator();
 
-  MachineMode? _machineMode;
   MachineState? _machineState;
   double? _spinVelocity;
 
@@ -20,7 +18,6 @@ class Decisioninator extends FlameGame {
 
   @override
   FutureOr<void> onLoad() async {
-    _machineMode = MachineMode.dinner;
     _machineState = MachineState.attract;
     _spinVelocity = Configuration.attractVelocity;
 
@@ -103,17 +100,31 @@ class Decisioninator extends FlameGame {
   void update(double dt) {
     super.update(dt);
 
+    double newSpinVelocity;
+
     switch (_machineState) {
       case null:
       case MachineState.attract:
-        _spinVelocity = Configuration.attractVelocity;
+        newSpinVelocity = Configuration.attractVelocity;
         break;
       case MachineState.spin:
-        _spinVelocity = _spinVelocity! - (Configuration.spinFriction * dt);
+        newSpinVelocity = _spinVelocity! - (Configuration.spinFriction * dt);
         break;
       case MachineState.result:
-        _spinVelocity = Configuration.spinResultSpeed;
+        newSpinVelocity = Configuration.spinResultSpeed;
         break;
+    }
+
+    if (newSpinVelocity < Configuration.minimumSpeedToBeConsideredSpinning) {
+      _machineState = MachineState.result;
+      newSpinVelocity = Configuration.spinResultSpeed;
+    }
+
+    if (newSpinVelocity != _spinVelocity) {
+      _spinVelocity = newSpinVelocity;
+      for (var element in _dinnerOptions) {
+        element.spinVelocity = newSpinVelocity;
+      }
     }
   }
 }

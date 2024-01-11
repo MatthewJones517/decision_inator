@@ -2,7 +2,6 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
-import '../app/configuration.dart';
 import '../app/decisioninator.dart';
 
 class DecisionatorOption extends SpriteComponent
