@@ -1,25 +1,30 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:decision_inator/app/configuration.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/services.dart';
 
 import '../components/decisionator_option.dart';
 import '../components/frame.dart';
 import 'assets.dart';
 import 'machine_state.dart';
 
-class Decisioninator extends FlameGame {
+class Decisioninator extends FlameGame with TapDetector {
   Decisioninator();
 
   MachineState? _machineState;
   double? _spinVelocity;
 
   late final List<DecisionatorOption> _dinnerOptions;
+  late final Random randomNumberGenerator;
 
   @override
   FutureOr<void> onLoad() async {
     _machineState = MachineState.attract;
     _spinVelocity = Configuration.attractVelocity;
+    randomNumberGenerator = Random();
 
     _dinnerOptions = [
       DecisionatorOption(
@@ -108,7 +113,7 @@ class Decisioninator extends FlameGame {
         newSpinVelocity = Configuration.attractVelocity;
         break;
       case MachineState.spin:
-        newSpinVelocity = _spinVelocity! - (Configuration.spinFriction * dt);
+        newSpinVelocity = _spinVelocity! - Configuration.spinFriction;
         break;
       case MachineState.result:
         newSpinVelocity = Configuration.spinResultSpeed;
@@ -126,5 +131,19 @@ class Decisioninator extends FlameGame {
         element.spinVelocity = newSpinVelocity;
       }
     }
+  }
+
+  @override
+  void onTap() {
+    super.onTap();
+    if (_machineState != MachineState.spin) {
+      _startSpin();
+    }
+  }
+
+  void _startSpin() {
+    _spinVelocity =
+        Configuration.spinBaseSpeed + randomNumberGenerator.nextInt(100) + 1;
+    _machineState = MachineState.spin;
   }
 }
