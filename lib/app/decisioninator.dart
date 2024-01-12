@@ -12,7 +12,8 @@ import '../components/frame.dart';
 import 'assets.dart';
 import 'machine_state.dart';
 
-class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
+class Decisioninator extends FlameGame
+    with TapDetector, KeyboardEvents, HasCollisionDetection {
   Decisioninator();
 
   MachineState? _machineState;
