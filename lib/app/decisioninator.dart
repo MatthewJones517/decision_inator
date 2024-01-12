@@ -27,7 +27,7 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
     _machineState = MachineState.attract;
     spinVelocity = Configuration.attractVelocity;
     randomNumberGenerator = Random();
-    activeModeIndex = 1;
+    activeModeIndex = 2;
 
     final List<DecisionatorOption> dinnerMode = [
       DecisionatorOption(
@@ -150,9 +150,63 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
       ),
     ];
 
+    final List<DecisionatorOption> dateMode = [
+      DecisionatorOption(
+        optionImage: Assets.amusementPark,
+        order: 0,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.boardGames,
+        order: 1,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.comedyClub,
+        order: 2,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.karaoke,
+        order: 3,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.movie,
+        order: 4,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.museum,
+        order: 5,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.painting,
+        order: 6,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.picnic,
+        order: 7,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.triviaNight,
+        order: 8,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.walk,
+        order: 9,
+        totalOptions: 10,
+      ),
+    ];
+
     _modes = [
       dinnerMode,
       choreMode,
+      dateMode,
     ];
 
     addAll([
