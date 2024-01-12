@@ -27,7 +27,7 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
     _machineState = MachineState.attract;
     spinVelocity = Configuration.attractVelocity;
     randomNumberGenerator = Random();
-    activeModeIndex = 2;
+    activeModeIndex = 3;
 
     final List<DecisionatorOption> dinnerMode = [
       DecisionatorOption(
@@ -203,10 +203,64 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
       ),
     ];
 
+    final List<DecisionatorOption> streamingMode = [
+      DecisionatorOption(
+        optionImage: Assets.appleTV,
+        order: 0,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.crunchyroll,
+        order: 1,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.disneyPlus,
+        order: 2,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.hboMax,
+        order: 3,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.hulu,
+        order: 4,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.netflix,
+        order: 5,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.paramount,
+        order: 6,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.peacock,
+        order: 7,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.primeVideo,
+        order: 8,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.youTube,
+        order: 9,
+        totalOptions: 10,
+      ),
+    ];
+
     _modes = [
       dinnerMode,
       choreMode,
       dateMode,
+      streamingMode,
     ];
 
     addAll([
