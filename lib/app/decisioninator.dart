@@ -21,13 +21,15 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
 
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
+  late final Frame frame;
 
   @override
   FutureOr<void> onLoad() async {
     _machineState = MachineState.attract;
     spinVelocity = Configuration.attractVelocity;
     randomNumberGenerator = Random();
-    activeModeIndex = 3;
+    activeModeIndex = 0;
+    frame = Frame();
 
     final List<DecisionatorOption> dinnerMode = [
       DecisionatorOption(
@@ -265,7 +267,7 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
 
     addAll([
       ..._modes[activeModeIndex!],
-      Frame(),
+      frame,
     ]);
   }
 
@@ -315,11 +317,29 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
 
     final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
 
+    final isM = keysPressed.contains(LogicalKeyboardKey.keyM);
+
     if (isSpace && isKeyDown) {
       if (_machineState != MachineState.spin) {
         _startSpin();
       }
       return KeyEventResult.handled;
+    }
+
+    if (isM && isKeyDown) {
+      if (_machineState == MachineState.attract) {
+        removeAll([..._modes[activeModeIndex!], frame]);
+
+        if (activeModeIndex! + 1 == _modes.length) {
+          activeModeIndex = 0;
+        } else {
+          activeModeIndex = activeModeIndex! + 1;
+        }
+
+        addAll([..._modes[activeModeIndex!], frame]);
+
+        return KeyEventResult.handled;
+      }
     }
 
     return KeyEventResult.ignored;
