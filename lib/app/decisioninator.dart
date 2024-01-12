@@ -4,13 +4,15 @@ import 'dart:math';
 import 'package:decision_inator/app/configuration.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import '../components/decisionator_option.dart';
 import '../components/frame.dart';
 import 'assets.dart';
 import 'machine_state.dart';
 
-class Decisioninator extends FlameGame with TapDetector {
+class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
   Decisioninator();
 
   MachineState? _machineState;
@@ -134,6 +136,25 @@ class Decisioninator extends FlameGame with TapDetector {
     if (_machineState != MachineState.spin) {
       _startSpin();
     }
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    RawKeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    final isKeyDown = event is RawKeyDownEvent;
+
+    final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
+
+    if (isSpace && isKeyDown) {
+      if (_machineState != MachineState.spin) {
+        _startSpin();
+      }
+      return KeyEventResult.handled;
+    }
+
+    return KeyEventResult.ignored;
   }
 
   void _startSpin() {
