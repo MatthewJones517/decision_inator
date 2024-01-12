@@ -17,8 +17,9 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
 
   MachineState? _machineState;
   double? spinVelocity;
+  int? activeModeIndex;
 
-  late final List<DecisionatorOption> _dinnerOptions;
+  late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
 
   @override
@@ -26,8 +27,9 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
     _machineState = MachineState.attract;
     spinVelocity = Configuration.attractVelocity;
     randomNumberGenerator = Random();
+    activeModeIndex = 1;
 
-    _dinnerOptions = [
+    final List<DecisionatorOption> dinnerMode = [
       DecisionatorOption(
         optionImage: Assets.applebees,
         order: 0,
@@ -95,8 +97,66 @@ class Decisioninator extends FlameGame with TapDetector, KeyboardEvents {
       ),
     ];
 
+    final List<DecisionatorOption> choreMode = [
+      DecisionatorOption(
+        optionImage: Assets.bathroom,
+        order: 0,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.cooking,
+        order: 1,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.dishes,
+        order: 2,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.dusting,
+        order: 3,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.groceries,
+        order: 4,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.laundry,
+        order: 5,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.trash,
+        order: 6,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.vacuuming,
+        order: 7,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.windowCleaning,
+        order: 8,
+        totalOptions: 10,
+      ),
+      DecisionatorOption(
+        optionImage: Assets.yardWork,
+        order: 9,
+        totalOptions: 10,
+      ),
+    ];
+
+    _modes = [
+      dinnerMode,
+      choreMode,
+    ];
+
     addAll([
-      ..._dinnerOptions,
+      ..._modes[activeModeIndex!],
       Frame(),
     ]);
   }
