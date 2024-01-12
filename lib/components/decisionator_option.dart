@@ -9,13 +9,11 @@ class DecisionatorOption extends SpriteComponent
   final String optionImage;
   final int order;
   final int totalOptions;
-  double spinVelocity;
 
   DecisionatorOption({
     required this.optionImage,
     required this.order,
     required this.totalOptions,
-    required this.spinVelocity,
   });
 
   @override
@@ -31,7 +29,7 @@ class DecisionatorOption extends SpriteComponent
   @override
   void update(double dt) {
     super.update(dt);
-    position.y += spinVelocity * dt;
+    position.y += gameRef.spinVelocity! * dt;
     final screenRect = Rect.fromLTWH(0, 0, game.size.x, game.size.y);
 
     if (position.y > screenRect.bottom) {
