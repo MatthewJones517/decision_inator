@@ -1,3 +1,4 @@
+import 'package:decision_inator/components/collision_line.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
@@ -5,10 +6,11 @@ import 'package:flame/flame.dart';
 import '../app/decisioninator.dart';
 
 class DecisionatorOption extends SpriteComponent
-    with HasGameRef<Decisioninator> {
+    with HasGameRef<Decisioninator>, CollisionCallbacks {
   final String optionImage;
   final int order;
   final int totalOptions;
+  bool? collisionEventsTriggered;
 
   DecisionatorOption({
     required this.optionImage,
@@ -34,6 +36,24 @@ class DecisionatorOption extends SpriteComponent
 
     if (position.y > screenRect.bottom) {
       position.y -= 122 * totalOptions;
+    }
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    if (other is CollisionLine && collisionEventsTriggered != true) {
+      gameRef.activelySelectedOption = optionImage;
+      collisionEventsTriggered = true;
+    }
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    super.onCollisionEnd(other);
+
+    if (other is CollisionLine) {
+      collisionEventsTriggered = false;
     }
   }
 }

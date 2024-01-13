@@ -20,6 +20,7 @@ class Decisioninator extends FlameGame
   MachineState? _machineState;
   double? spinVelocity;
   int? activeModeIndex;
+  String? activelySelectedOption;
 
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
