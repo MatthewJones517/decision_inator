@@ -53,4 +53,8 @@ class Assets {
   static const peacock = 'streaming_services/peacock.png';
   static const primeVideo = 'streaming_services/prime_video.png';
   static const youTube = 'streaming_services/YouTube.png';
+
+  // Sound FX
+  static const click = 'prize-wheel-single-click.mp3';
+  static const fanfare = 'fanfare.mp3';
 }
