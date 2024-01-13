@@ -1,9 +1,10 @@
-import 'package:decision_inator/components/collision_line.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import '../app/decisioninator.dart';
+import '../app/machine_state.dart';
+import 'collision_line.dart';
 
 class DecisionatorOption extends SpriteComponent
     with HasGameRef<Decisioninator>, CollisionCallbacks {
@@ -42,7 +43,9 @@ class DecisionatorOption extends SpriteComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    if (other is CollisionLine && collisionEventsTriggered != true) {
+    if (other is CollisionLine &&
+        collisionEventsTriggered != true &&
+        gameRef.machineState == MachineState.spin) {
       gameRef.activelySelectedOption = optionImage;
       gameRef.audioPool.start();
       collisionEventsTriggered = true;

@@ -18,7 +18,7 @@ class Decisioninator extends FlameGame
     with TapDetector, KeyboardEvents, HasCollisionDetection {
   Decisioninator();
 
-  MachineState? _machineState;
+  MachineState? machineState;
   double? spinVelocity;
   int? activeModeIndex;
   String? activelySelectedOption;
@@ -31,7 +31,7 @@ class Decisioninator extends FlameGame
 
   @override
   FutureOr<void> onLoad() async {
-    _machineState = MachineState.attract;
+    machineState = MachineState.attract;
     spinVelocity = Configuration.attractVelocity;
     randomNumberGenerator = Random();
     activeModeIndex = 0;
@@ -40,7 +40,7 @@ class Decisioninator extends FlameGame
 
     audioPool = await FlameAudio.createPool(
       Assets.click,
-      minPlayers: 3,
+      minPlayers: 2,
       maxPlayers: 4,
     );
 
@@ -291,7 +291,7 @@ class Decisioninator extends FlameGame
 
     double newSpinVelocity;
 
-    switch (_machineState) {
+    switch (machineState) {
       case null:
       case MachineState.attract:
         newSpinVelocity = Configuration.attractVelocity;
@@ -305,7 +305,7 @@ class Decisioninator extends FlameGame
     }
 
     if (newSpinVelocity < Configuration.minimumSpeedToBeConsideredSpinning) {
-      _machineState = MachineState.result;
+      machineState = MachineState.result;
       newSpinVelocity = Configuration.spinResultSpeed;
     }
 
@@ -317,7 +317,7 @@ class Decisioninator extends FlameGame
   @override
   void onTap() {
     super.onTap();
-    if (_machineState != MachineState.spin) {
+    if (machineState != MachineState.spin) {
       _startSpin();
     }
   }
@@ -334,14 +334,14 @@ class Decisioninator extends FlameGame
     final isM = keysPressed.contains(LogicalKeyboardKey.keyM);
 
     if (isSpace && isKeyDown) {
-      if (_machineState != MachineState.spin) {
+      if (machineState != MachineState.spin) {
         _startSpin();
       }
       return KeyEventResult.handled;
     }
 
     if (isM && isKeyDown) {
-      if (_machineState == MachineState.attract) {
+      if (machineState == MachineState.attract) {
         removeAll([
           ..._modes[activeModeIndex!],
           frame,
@@ -370,6 +370,6 @@ class Decisioninator extends FlameGame
   void _startSpin() {
     spinVelocity =
         Configuration.spinBaseSpeed + randomNumberGenerator.nextInt(100) + 1;
-    _machineState = MachineState.spin;
+    machineState = MachineState.spin;
   }
 }
