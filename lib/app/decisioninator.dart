@@ -22,6 +22,7 @@ class Decisioninator extends FlameGame
   double? spinVelocity;
   int? activeModeIndex;
   String? activelySelectedOption;
+  bool spinComplete = false;
 
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
@@ -301,9 +302,12 @@ class Decisioninator extends FlameGame
     }
 
     if (newSpinVelocity < Configuration.minimumSpeedToBeConsideredSpinning) {
-      machineState = MachineState.result;
-      newSpinVelocity = Configuration.spinResultSpeed;
-      FlameAudio.play(Assets.fanfare, volume: .25);
+      if (!spinComplete) {
+        machineState = MachineState.result;
+        newSpinVelocity = Configuration.spinResultSpeed;
+        FlameAudio.play(Assets.fanfare);
+        spinComplete = true;
+      }
     }
 
     if (newSpinVelocity != spinVelocity) {
