@@ -1,18 +1,19 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:decision_inator/app/configuration.dart';
-import 'package:decision_inator/components/collision_line.dart';
-import 'package:decision_inator/components/result_banner.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../components/black_overlay.dart';
+import '../components/collision_line.dart';
 import '../components/decisionator_option.dart';
 import '../components/frame.dart';
+import '../components/result_banner.dart';
 import 'assets.dart';
+import 'configuration.dart';
 import 'machine_state.dart';
 
 class Decisioninator extends FlameGame
@@ -30,9 +31,12 @@ class Decisioninator extends FlameGame
   late final Frame frame;
   late final CollisionLine collisionLine;
   late final ResultBanner resultBanner;
+  late final BlackOverlay blackOverlay;
 
   @override
   FutureOr<void> onLoad() async {
+    final screenRect = Rect.fromLTWH(0, 0, size.x, size.y);
+
     machineState = MachineState.attract;
     spinVelocity = Configuration.attractVelocity;
     randomNumberGenerator = Random();
@@ -40,6 +44,7 @@ class Decisioninator extends FlameGame
     frame = Frame();
     collisionLine = CollisionLine();
     resultBanner = ResultBanner();
+    blackOverlay = BlackOverlay(screenRect);
 
     await FlameAudio.audioCache.load(Assets.click);
     await FlameAudio.audioCache.load(Assets.fanfare);
@@ -309,12 +314,18 @@ class Decisioninator extends FlameGame
         machineState = MachineState.result;
         newSpinVelocity = Configuration.spinResultSpeed;
         FlameAudio.play(Assets.fanfare);
-        add(resultBanner);
+        addAll([
+          blackOverlay,
+          resultBanner,
+        ]);
         spinComplete = true;
 
         Future.delayed(const Duration(seconds: 5), () {
           machineState = MachineState.attract;
-          remove(resultBanner);
+          removeAll([
+            blackOverlay,
+            resultBanner,
+          ]);
           spinComplete = false;
         });
       }

@@ -13,7 +13,7 @@ class ResultBanner extends SpriteComponent with HasGameRef<Decisioninator> {
     final image = await Flame.images.load(Assets.choiceBanner);
     size = Vector2(480, 324);
     final screenRect = Rect.fromLTWH(0, 0, game.size.x, game.size.y);
-    position.y = screenRect.height / 2;
+    position.y = (screenRect.height / 2) - 180;
     position.x = 0;
     sprite = Sprite(image);
   }
