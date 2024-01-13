@@ -307,6 +307,11 @@ class Decisioninator extends FlameGame
         newSpinVelocity = Configuration.spinResultSpeed;
         FlameAudio.play(Assets.fanfare);
         spinComplete = true;
+
+        Future.delayed(const Duration(seconds: 5), () {
+          machineState = MachineState.attract;
+          spinComplete = false;
+        });
       }
     }
 
