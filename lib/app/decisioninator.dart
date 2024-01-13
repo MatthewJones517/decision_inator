@@ -51,6 +51,70 @@ class Decisioninator extends FlameGame
     await FlameAudio.audioCache.load(Assets.click);
     await FlameAudio.audioCache.load(Assets.fanfare);
 
+    _modes = _loadModes();
+
+    addAll([
+      ..._modes[activeModeIndex!],
+      frame,
+      collisionLine,
+    ]);
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    double newSpinVelocity;
+
+    switch (machineState) {
+      case null:
+      case MachineState.attract:
+        newSpinVelocity = Configuration.attractVelocity;
+        break;
+      case MachineState.spin:
+        newSpinVelocity = spinVelocity! - Configuration.spinFriction;
+        break;
+      case MachineState.result:
+        newSpinVelocity = Configuration.spinResultSpeed;
+        break;
+    }
+
+    if (newSpinVelocity < Configuration.minimumSpeedToBeConsideredSpinning) {
+      _showResult();
+      newSpinVelocity = Configuration.spinResultSpeed;
+    }
+
+    if (newSpinVelocity != spinVelocity) {
+      spinVelocity = newSpinVelocity;
+    }
+  }
+
+  void _showResult() {
+    if (!spinComplete) {
+      machineState = MachineState.result;
+
+      FlameAudio.play(Assets.fanfare);
+      resultBannerContent = ResultBannerContent(activelySelectedOption!);
+      addAll([
+        blackOverlay,
+        resultBannerContent!,
+        resultBanner,
+      ]);
+      spinComplete = true;
+
+      Future.delayed(const Duration(seconds: 5), () {
+        machineState = MachineState.attract;
+        removeAll([
+          blackOverlay,
+          resultBannerContent!,
+          resultBanner,
+        ]);
+        spinComplete = false;
+      });
+    }
+  }
+
+  List<List<DecisionatorOption>> _loadModes() {
     final List<DecisionatorOption> dinnerMode = [
       DecisionatorOption(
         optionImage: Assets.applebees,
@@ -278,76 +342,19 @@ class Decisioninator extends FlameGame
       ),
     ];
 
-    _modes = [
+    return [
       dinnerMode,
       choreMode,
       dateMode,
       streamingMode,
     ];
-
-    addAll([
-      ..._modes[activeModeIndex!],
-      frame,
-      collisionLine,
-    ]);
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-
-    double newSpinVelocity;
-
-    switch (machineState) {
-      case null:
-      case MachineState.attract:
-        newSpinVelocity = Configuration.attractVelocity;
-        break;
-      case MachineState.spin:
-        newSpinVelocity = spinVelocity! - Configuration.spinFriction;
-        break;
-      case MachineState.result:
-        newSpinVelocity = Configuration.spinResultSpeed;
-        break;
-    }
-
-    if (newSpinVelocity < Configuration.minimumSpeedToBeConsideredSpinning) {
-      if (!spinComplete) {
-        machineState = MachineState.result;
-        newSpinVelocity = Configuration.spinResultSpeed;
-        FlameAudio.play(Assets.fanfare);
-        resultBannerContent = ResultBannerContent(activelySelectedOption!);
-        addAll([
-          blackOverlay,
-          resultBannerContent!,
-          resultBanner,
-        ]);
-        spinComplete = true;
-
-        Future.delayed(const Duration(seconds: 5), () {
-          machineState = MachineState.attract;
-          removeAll([
-            blackOverlay,
-            resultBannerContent!,
-            resultBanner,
-          ]);
-          spinComplete = false;
-        });
-      }
-    }
-
-    if (newSpinVelocity != spinVelocity) {
-      spinVelocity = newSpinVelocity;
-    }
   }
 
   @override
   void onTap() {
     super.onTap();
-    if (machineState != MachineState.spin &&
-        machineState != MachineState.result) {
-      _startSpin();
-    }
+
+    _startSpin();
   }
 
   @override
@@ -362,44 +369,46 @@ class Decisioninator extends FlameGame
     final isM = keysPressed.contains(LogicalKeyboardKey.keyM);
 
     if (isSpace && isKeyDown) {
-      if (machineState != MachineState.spin &&
-          machineState != MachineState.result) {
-        _startSpin();
-      }
+      _startSpin();
       return KeyEventResult.handled;
     }
 
     if (isM && isKeyDown) {
-      if (machineState == MachineState.attract) {
-        removeAll([
-          ..._modes[activeModeIndex!],
-          frame,
-          collisionLine,
-        ]);
-
-        if (activeModeIndex! + 1 == _modes.length) {
-          activeModeIndex = 0;
-        } else {
-          activeModeIndex = activeModeIndex! + 1;
-        }
-
-        addAll([
-          ..._modes[activeModeIndex!],
-          frame,
-          collisionLine,
-        ]);
-
-        return KeyEventResult.handled;
-      }
+      _switchMode();
+      return KeyEventResult.handled;
     }
 
     return KeyEventResult.ignored;
   }
 
+  void _switchMode() {
+    if (machineState == MachineState.attract) {
+      removeAll([
+        ..._modes[activeModeIndex!],
+        frame,
+        collisionLine,
+      ]);
+
+      if (activeModeIndex! + 1 == _modes.length) {
+        activeModeIndex = 0;
+      } else {
+        activeModeIndex = activeModeIndex! + 1;
+      }
+
+      addAll([
+        ..._modes[activeModeIndex!],
+        frame,
+        collisionLine,
+      ]);
+    }
+  }
+
   void _startSpin() {
-    spinVelocity =
-        Configuration.spinBaseSpeed + randomNumberGenerator.nextInt(100) + 1;
-    machineState = MachineState.spin;
+    if (machineState == MachineState.attract) {
+      spinVelocity =
+          Configuration.spinBaseSpeed + randomNumberGenerator.nextInt(100) + 1;
+      machineState = MachineState.spin;
+    }
   }
 
   void playClick() {
