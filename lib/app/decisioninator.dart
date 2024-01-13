@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:decision_inator/components/result_banner_content.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -31,6 +32,7 @@ class Decisioninator extends FlameGame
   late final Frame frame;
   late final CollisionLine collisionLine;
   late final ResultBanner resultBanner;
+  ResultBannerContent? resultBannerContent;
   late final BlackOverlay blackOverlay;
 
   @override
@@ -314,8 +316,10 @@ class Decisioninator extends FlameGame
         machineState = MachineState.result;
         newSpinVelocity = Configuration.spinResultSpeed;
         FlameAudio.play(Assets.fanfare);
+        resultBannerContent = ResultBannerContent(activelySelectedOption!);
         addAll([
           blackOverlay,
+          resultBannerContent!,
           resultBanner,
         ]);
         spinComplete = true;
@@ -324,6 +328,7 @@ class Decisioninator extends FlameGame
           machineState = MachineState.attract;
           removeAll([
             blackOverlay,
+            resultBannerContent!,
             resultBanner,
           ]);
           spinComplete = false;
@@ -339,7 +344,8 @@ class Decisioninator extends FlameGame
   @override
   void onTap() {
     super.onTap();
-    if (machineState != MachineState.spin) {
+    if (machineState != MachineState.spin &&
+        machineState != MachineState.result) {
       _startSpin();
     }
   }
@@ -356,7 +362,8 @@ class Decisioninator extends FlameGame
     final isM = keysPressed.contains(LogicalKeyboardKey.keyM);
 
     if (isSpace && isKeyDown) {
-      if (machineState != MachineState.spin) {
+      if (machineState != MachineState.spin &&
+          machineState != MachineState.result) {
         _startSpin();
       }
       return KeyEventResult.handled;

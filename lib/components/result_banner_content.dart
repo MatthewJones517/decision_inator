@@ -5,15 +5,17 @@ import '../app/decisioninator.dart';
 
 class ResultBannerContent extends SpriteComponent
     with HasGameRef<Decisioninator> {
-  ResultBannerContent();
+  String selectedOption;
+
+  ResultBannerContent(this.selectedOption);
 
   @override
   Future<void> onLoad() async {
-    final image = await Flame.images.load(gameRef.activelySelectedOption!);
-    size = Vector2(480, 150);
+    final image = await Flame.images.load(selectedOption);
+    size = Vector2(460, 144);
     final screenRect = Rect.fromLTWH(0, 0, game.size.x, game.size.y);
-    position.y = (screenRect.height / 2) + 20;
-    position.x = 0;
+    position.y = (screenRect.height / 2) - 25;
+    position.x = 10;
     sprite = Sprite(image);
   }
 }
