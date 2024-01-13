@@ -23,7 +23,6 @@ class Decisioninator extends FlameGame
   int? activeModeIndex;
   String? activelySelectedOption;
 
-  late final AudioPool audioPool;
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
   late final Frame frame;
@@ -38,11 +37,8 @@ class Decisioninator extends FlameGame
     frame = Frame();
     collisionLine = CollisionLine();
 
-    audioPool = await FlameAudio.createPool(
-      Assets.click,
-      minPlayers: 2,
-      maxPlayers: 4,
-    );
+    await FlameAudio.audioCache.load(Assets.click);
+    await FlameAudio.audioCache.load(Assets.fanfare);
 
     final List<DecisionatorOption> dinnerMode = [
       DecisionatorOption(
@@ -307,6 +303,7 @@ class Decisioninator extends FlameGame
     if (newSpinVelocity < Configuration.minimumSpeedToBeConsideredSpinning) {
       machineState = MachineState.result;
       newSpinVelocity = Configuration.spinResultSpeed;
+      FlameAudio.play(Assets.fanfare, volume: .25);
     }
 
     if (newSpinVelocity != spinVelocity) {
@@ -371,5 +368,9 @@ class Decisioninator extends FlameGame
     spinVelocity =
         Configuration.spinBaseSpeed + randomNumberGenerator.nextInt(100) + 1;
     machineState = MachineState.spin;
+  }
+
+  void playClick() {
+    FlameAudio.play(Assets.click);
   }
 }

@@ -47,7 +47,7 @@ class DecisionatorOption extends SpriteComponent
         collisionEventsTriggered != true &&
         gameRef.machineState == MachineState.spin) {
       gameRef.activelySelectedOption = optionImage;
-      gameRef.audioPool.start();
+      gameRef.playClick();
       collisionEventsTriggered = true;
     }
   }
