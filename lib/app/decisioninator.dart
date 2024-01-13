@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:decision_inator/app/configuration.dart';
 import 'package:decision_inator/components/collision_line.dart';
+import 'package:decision_inator/components/result_banner.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -28,6 +29,7 @@ class Decisioninator extends FlameGame
   late final Random randomNumberGenerator;
   late final Frame frame;
   late final CollisionLine collisionLine;
+  late final ResultBanner resultBanner;
 
   @override
   FutureOr<void> onLoad() async {
@@ -37,6 +39,7 @@ class Decisioninator extends FlameGame
     activeModeIndex = 0;
     frame = Frame();
     collisionLine = CollisionLine();
+    resultBanner = ResultBanner();
 
     await FlameAudio.audioCache.load(Assets.click);
     await FlameAudio.audioCache.load(Assets.fanfare);
@@ -306,10 +309,12 @@ class Decisioninator extends FlameGame
         machineState = MachineState.result;
         newSpinVelocity = Configuration.spinResultSpeed;
         FlameAudio.play(Assets.fanfare);
+        add(resultBanner);
         spinComplete = true;
 
         Future.delayed(const Duration(seconds: 5), () {
           machineState = MachineState.attract;
+          remove(resultBanner);
           spinComplete = false;
         });
       }
