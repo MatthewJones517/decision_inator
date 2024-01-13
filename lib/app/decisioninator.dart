@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:decision_inator/app/configuration.dart';
+import 'package:decision_inator/components/collision_line.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +24,7 @@ class Decisioninator extends FlameGame
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
   late final Frame frame;
+  late final CollisionLine collisionLine;
 
   @override
   FutureOr<void> onLoad() async {
@@ -31,6 +33,7 @@ class Decisioninator extends FlameGame
     randomNumberGenerator = Random();
     activeModeIndex = 0;
     frame = Frame();
+    collisionLine = CollisionLine();
 
     final List<DecisionatorOption> dinnerMode = [
       DecisionatorOption(
@@ -269,6 +272,7 @@ class Decisioninator extends FlameGame
     addAll([
       ..._modes[activeModeIndex!],
       frame,
+      collisionLine,
     ]);
   }
 
@@ -329,7 +333,11 @@ class Decisioninator extends FlameGame
 
     if (isM && isKeyDown) {
       if (_machineState == MachineState.attract) {
-        removeAll([..._modes[activeModeIndex!], frame]);
+        removeAll([
+          ..._modes[activeModeIndex!],
+          frame,
+          collisionLine,
+        ]);
 
         if (activeModeIndex! + 1 == _modes.length) {
           activeModeIndex = 0;
@@ -337,7 +345,11 @@ class Decisioninator extends FlameGame
           activeModeIndex = activeModeIndex! + 1;
         }
 
-        addAll([..._modes[activeModeIndex!], frame]);
+        addAll([
+          ..._modes[activeModeIndex!],
+          frame,
+          collisionLine,
+        ]);
 
         return KeyEventResult.handled;
       }
