@@ -1,6 +1,7 @@
 class Assets {
   // UI
   static const frame = 'ui/frame.png';
+  static const collisionLine = 'ui/collision_line.png';
 
   // Restaurants
   static const applebees = 'restaurants/Applebees.png';
