@@ -44,6 +44,7 @@ class DecisionatorOption extends SpriteComponent
     super.onCollision(intersectionPoints, other);
     if (other is CollisionLine && collisionEventsTriggered != true) {
       gameRef.activelySelectedOption = optionImage;
+      gameRef.audioPool.start();
       collisionEventsTriggered = true;
     }
   }

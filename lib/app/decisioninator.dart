@@ -5,6 +5,7 @@ import 'package:decision_inator/app/configuration.dart';
 import 'package:decision_inator/components/collision_line.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -22,6 +23,7 @@ class Decisioninator extends FlameGame
   int? activeModeIndex;
   String? activelySelectedOption;
 
+  late final AudioPool audioPool;
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
   late final Frame frame;
@@ -35,6 +37,12 @@ class Decisioninator extends FlameGame
     activeModeIndex = 0;
     frame = Frame();
     collisionLine = CollisionLine();
+
+    audioPool = await FlameAudio.createPool(
+      Assets.click,
+      minPlayers: 3,
+      maxPlayers: 4,
+    );
 
     final List<DecisionatorOption> dinnerMode = [
       DecisionatorOption(
