@@ -2,6 +2,7 @@ class Assets {
   // UI
   static const frame = 'ui/frame.png';
   static const collisionLine = 'ui/collision_line.png';
+  static const choiceBanner = 'ui/Choice_Banner.png';
 
   // Restaurants
   static const applebees = 'restaurants/Applebees.png';
