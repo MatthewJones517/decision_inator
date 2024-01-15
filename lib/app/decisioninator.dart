@@ -406,7 +406,7 @@ class Decisioninator extends FlameGame
   void _startSpin() {
     if (machineState == MachineState.attract) {
       spinVelocity =
-          Configuration.spinBaseSpeed + randomNumberGenerator.nextInt(100) + 1;
+          Configuration.spinBaseSpeed + randomNumberGenerator.nextInt(150) + 1;
       machineState = MachineState.spin;
     }
   }
