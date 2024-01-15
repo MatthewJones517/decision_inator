@@ -1,5 +1,5 @@
+import 'dart:math' as math;
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import '../app/decisioninator.dart';
 
@@ -13,9 +13,10 @@ class ResultBannerContent extends SpriteComponent
   Future<void> onLoad() async {
     final image = await Flame.images.load(selectedOption);
     size = Vector2(460, 144);
-    final screenRect = Rect.fromLTWH(0, 0, game.size.x, game.size.y);
-    position.y = (screenRect.height / 2) - 25;
-    position.x = 10;
+    anchor = Anchor.center;
+    angle = math.pi / 2;
+    position.y = 230;
+    position.x = 385;
     sprite = Sprite(image);
   }
 }
