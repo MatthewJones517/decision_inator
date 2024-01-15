@@ -15,7 +15,7 @@ class ResultBannerContent extends SpriteComponent
     size = Vector2(460, 144);
     anchor = Anchor.center;
     angle = math.pi / 2;
-    position.y = 230;
+    position.y = 235;
     position.x = 385;
     sprite = Sprite(image);
   }
