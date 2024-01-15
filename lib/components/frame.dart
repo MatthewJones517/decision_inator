@@ -1,5 +1,5 @@
+import 'dart:math' as math;
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import '../app/assets.dart';
 import '../app/decisioninator.dart';
@@ -10,8 +10,10 @@ class Frame extends SpriteComponent with HasGameRef<Decisioninator> {
   @override
   Future<void> onLoad() async {
     final image = await Flame.images.load(Assets.frame);
-    final screenRect = Rect.fromLTWH(0, 0, game.size.x, game.size.y);
-    size = Vector2(480, screenRect.height);
+    size = Vector2(480, 800);
+    anchor = Anchor.center;
+    angle = math.pi / 2;
+    position = Vector2(400, 240);
     sprite = Sprite(image);
   }
 }

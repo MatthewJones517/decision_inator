@@ -1,6 +1,6 @@
+import 'dart:math' as math;
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import '../app/decisioninator.dart';
 import '../app/machine_state.dart';
@@ -23,8 +23,10 @@ class DecisionatorOption extends SpriteComponent
   Future<void> onLoad() async {
     final image = await Flame.images.load(optionImage);
     size = Vector2(390, 122);
-    position.y = (order * 122) - 122;
-    position.x = 45;
+    position.y = 237;
+    position.x = (order * 122) - 122;
+    anchor = Anchor.center;
+    angle = math.pi / 2;
     sprite = Sprite(image);
     add(RectangleHitbox());
   }
@@ -32,11 +34,10 @@ class DecisionatorOption extends SpriteComponent
   @override
   void update(double dt) {
     super.update(dt);
-    position.y += gameRef.spinVelocity! * dt;
-    final screenRect = Rect.fromLTWH(0, 0, game.size.x, game.size.y);
+    position.x += gameRef.spinVelocity! * dt;
 
-    if (position.y > screenRect.bottom) {
-      position.y -= 122 * totalOptions;
+    if (position.x > 840) {
+      position.x -= 122 * totalOptions;
     }
   }
 
