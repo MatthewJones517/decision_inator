@@ -15,7 +15,7 @@ class CollisionLine extends SpriteComponent with HasGameRef<Decisioninator> {
     anchor = Anchor.center;
     angle = math.pi / 2;
     position.y = 240;
-    position.x = 393;
+    position.x = 287;
     sprite = Sprite(image);
     add(RectangleHitbox());
   }
