@@ -34,6 +34,8 @@ class Decisioninator extends FlameGame
   late final ResultBanner resultBanner;
   ResultBannerContent? resultBannerContent;
   late final BlackOverlay blackOverlay;
+  late final AudioPool clickPool;
+  late final AudioPool fanfarePool;
 
   @override
   FutureOr<void> onLoad() async {
@@ -50,6 +52,18 @@ class Decisioninator extends FlameGame
 
     await FlameAudio.audioCache.load(Assets.click);
     await FlameAudio.audioCache.load(Assets.fanfare);
+
+    clickPool = await FlameAudio.createPool(
+      Assets.click,
+      minPlayers: 3,
+      maxPlayers: 4,
+    );
+
+    fanfarePool = await FlameAudio.createPool(
+      Assets.fanfare,
+      minPlayers: 1,
+      maxPlayers: 2,
+    );
 
     _modes = _loadModes();
 
@@ -93,7 +107,7 @@ class Decisioninator extends FlameGame
     if (!spinComplete) {
       machineState = MachineState.result;
 
-      FlameAudio.play(Assets.fanfare);
+      fanfarePool.start();
       resultBannerContent = ResultBannerContent(activelySelectedOption!);
       addAll([
         blackOverlay,
@@ -412,6 +426,6 @@ class Decisioninator extends FlameGame
   }
 
   void playClick() {
-    FlameAudio.play(Assets.click);
+    clickPool.start();
   }
 }
