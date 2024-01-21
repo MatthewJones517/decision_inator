@@ -10,10 +10,10 @@ class Frame extends SpriteComponent with HasGameRef<Decisioninator> {
   @override
   Future<void> onLoad() async {
     final image = await Flame.images.load(Assets.frame);
-    size = Vector2(480, 800);
+    size = Vector2(353, 588);
     anchor = Anchor.center;
     angle = math.pi / 2;
-    position = Vector2(400, 240);
+    position = Vector2(293, 175);
     sprite = Sprite(image);
   }
 }
