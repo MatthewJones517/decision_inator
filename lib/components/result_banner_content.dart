@@ -12,11 +12,11 @@ class ResultBannerContent extends SpriteComponent
   @override
   Future<void> onLoad() async {
     final image = await Flame.images.load(selectedOption);
-    size = Vector2(460, 144);
+    size = Vector2(330, 103);
     anchor = Anchor.center;
     angle = math.pi / 2;
-    position.y = 235;
-    position.x = 385;
+    position.y = 180;
+    position.x = 275;
     sprite = Sprite(image);
   }
 }

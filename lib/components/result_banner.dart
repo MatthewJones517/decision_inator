@@ -10,11 +10,11 @@ class ResultBanner extends SpriteComponent with HasGameRef<Decisioninator> {
   @override
   Future<void> onLoad() async {
     final image = await Flame.images.load(Assets.choiceBanner);
-    size = Vector2(480, 324);
+    size = Vector2(353, 238);
     anchor = Anchor.center;
     angle = math.pi / 2;
-    position.y = 240;
-    position.x = 450;
+    position.y = 176.5;
+    position.x = 320;
     sprite = Sprite(image);
   }
 }
