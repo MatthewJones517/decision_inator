@@ -22,9 +22,9 @@ class DecisionatorOption extends SpriteComponent
   @override
   Future<void> onLoad() async {
     final image = await Flame.images.load(optionImage);
-    size = Vector2(390, 122);
-    position.y = 237;
-    position.x = (order * 122) - 122;
+    size = Vector2(285, 89);
+    position.y = 172;
+    position.x = (order * 89) - 89;
     anchor = Anchor.center;
     angle = math.pi / 2;
     sprite = Sprite(image);
@@ -37,7 +37,7 @@ class DecisionatorOption extends SpriteComponent
     position.x += gameRef.spinVelocity! * dt;
 
     if (position.x > 840) {
-      position.x -= 122 * totalOptions;
+      position.x -= 89 * totalOptions;
     }
   }
 
