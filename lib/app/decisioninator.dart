@@ -7,6 +7,7 @@ import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_gpiod/flutter_gpiod.dart';
 
 import '../components/black_overlay.dart';
 import '../components/collision_line.dart';
@@ -66,6 +67,30 @@ class Decisioninator extends FlameGame
     );
 
     _modes = _loadModes();
+
+    final chips = FlutterGpiod.instance.chips;
+
+    final chip = chips.singleWhere(
+      (chip) => chip.label == 'pinctrl-bcm2711',
+      orElse: () =>
+          chips.singleWhere((chip) => chip.label == 'pinctrl-bcm2835'),
+    );
+
+    final spinButtonLine = chip.lines[5];
+
+    spinButtonLine.requestInput(
+        consumer: "spin",
+        triggers: {
+          SignalEdge.falling,
+          SignalEdge.rising,
+        },
+        bias: Bias.pullUp);
+
+    spinButtonLine.onEvent.listen((event) {
+      if (event.edge == SignalEdge.rising) {
+        _startSpin();
+      }
+    });
 
     addAll([
       ..._modes[activeModeIndex!],
