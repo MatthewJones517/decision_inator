@@ -384,7 +384,7 @@ class Decisioninator extends FlameGame
     if (machineState == MachineState.attract && !modeDebounceActive) {
       modeDebounceActive = true;
 
-      Future.delayed(const Duration(milliseconds: 250), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         modeDebounceActive = false;
       });
 
