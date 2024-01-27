@@ -4,4 +4,6 @@ class Configuration {
   static const double spinResultSpeed = 0;
   static const double spinFriction = 2;
   static const double minimumSpeedToBeConsideredSpinning = 10;
+  static const int spinButtonGpioPin = 5;
+  static const int modeButtonGpioPin = 21;
 }

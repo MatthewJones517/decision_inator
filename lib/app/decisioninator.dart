@@ -27,6 +27,7 @@ class Decisioninator extends FlameGame
   int? activeModeIndex;
   String? activelySelectedOption;
   bool spinComplete = false;
+  bool modeDebounceActive = false;
 
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
@@ -76,21 +77,11 @@ class Decisioninator extends FlameGame
           chips.singleWhere((chip) => chip.label == 'pinctrl-bcm2835'),
     );
 
-    final spinButtonLine = chip.lines[5];
+    final GpioLine spinButtonLine = chip.lines[Configuration.spinButtonGpioPin];
+    _setUpButton(spinButtonLine, _startSpin);
 
-    spinButtonLine.requestInput(
-        consumer: "spin",
-        triggers: {
-          SignalEdge.falling,
-          SignalEdge.rising,
-        },
-        bias: Bias.pullUp);
-
-    spinButtonLine.onEvent.listen((event) {
-      if (event.edge == SignalEdge.rising) {
-        _startSpin();
-      }
-    });
+    final GpioLine modeButtonLine = chip.lines[Configuration.modeButtonGpioPin];
+    _setUpButton(modeButtonLine, _switchMode);
 
     addAll([
       ..._modes[activeModeIndex!],
@@ -389,39 +380,14 @@ class Decisioninator extends FlameGame
     ];
   }
 
-  @override
-  void onTap() {
-    super.onTap();
-
-    _startSpin();
-  }
-
-  @override
-  KeyEventResult onKeyEvent(
-    RawKeyEvent event,
-    Set<LogicalKeyboardKey> keysPressed,
-  ) {
-    final isKeyDown = event is RawKeyDownEvent;
-
-    final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
-
-    final isM = keysPressed.contains(LogicalKeyboardKey.keyM);
-
-    if (isSpace && isKeyDown) {
-      _startSpin();
-      return KeyEventResult.handled;
-    }
-
-    if (isM && isKeyDown) {
-      _switchMode();
-      return KeyEventResult.handled;
-    }
-
-    return KeyEventResult.ignored;
-  }
-
   void _switchMode() {
-    if (machineState == MachineState.attract) {
+    if (machineState == MachineState.attract && !modeDebounceActive) {
+      modeDebounceActive = true;
+
+      Future.delayed(const Duration(milliseconds: 250), () {
+        modeDebounceActive = false;
+      });
+
       removeAll([
         ..._modes[activeModeIndex!],
         frame,
@@ -448,6 +414,22 @@ class Decisioninator extends FlameGame
           Configuration.spinBaseSpeed + randomNumberGenerator.nextInt(150) + 1;
       machineState = MachineState.spin;
     }
+  }
+
+  void _setUpButton(GpioLine line, Function onPush) {
+    line.requestInput(
+        consumer: line.toString(),
+        triggers: {
+          SignalEdge.falling,
+          SignalEdge.rising,
+        },
+        bias: Bias.pullUp);
+
+    line.onEvent.listen((event) {
+      if (event.edge == SignalEdge.rising) {
+        onPush();
+      }
+    });
   }
 
   void playClick() {
