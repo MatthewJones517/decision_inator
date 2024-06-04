@@ -29,6 +29,9 @@ class Decisioninator extends FlameGame
   bool spinComplete = false;
   bool modeDebounceActive = false;
 
+  // Turn off for testing
+  bool gpioEnabled = true;
+
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
   late final Frame frame;
@@ -69,19 +72,23 @@ class Decisioninator extends FlameGame
 
     _modes = _loadModes();
 
-    final chips = FlutterGpiod.instance.chips;
+    if (gpioEnabled) {
+      final chips = FlutterGpiod.instance.chips;
 
-    final chip = chips.singleWhere(
-      (chip) => chip.label == 'pinctrl-bcm2711',
-      orElse: () =>
-          chips.singleWhere((chip) => chip.label == 'pinctrl-bcm2835'),
-    );
+      final chip = chips.singleWhere(
+        (chip) => chip.label == 'pinctrl-bcm2711',
+        orElse: () =>
+            chips.singleWhere((chip) => chip.label == 'pinctrl-bcm2835'),
+      );
 
-    final GpioLine spinButtonLine = chip.lines[Configuration.spinButtonGpioPin];
-    _setUpButton(spinButtonLine, _startSpin);
+      final GpioLine spinButtonLine =
+          chip.lines[Configuration.spinButtonGpioPin];
+      _setUpButton(spinButtonLine, _startSpin);
 
-    final GpioLine modeButtonLine = chip.lines[Configuration.modeButtonGpioPin];
-    _setUpButton(modeButtonLine, _switchMode);
+      final GpioLine modeButtonLine =
+          chip.lines[Configuration.modeButtonGpioPin];
+      _setUpButton(modeButtonLine, _switchMode);
+    }
 
     addAll([
       ..._modes[activeModeIndex!],
