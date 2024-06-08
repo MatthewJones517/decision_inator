@@ -46,8 +46,8 @@ class Decisioninator extends FlameGame
   FutureOr<void> onLoad() async {
     final screenRect = Rect.fromLTWH(0, 0, size.x, size.y);
 
-    machineState = MachineState.attract;
-    spinVelocity = Configuration.attractVelocity;
+    machineState = MachineState.loading;
+    spinVelocity = Configuration.spinLoadingSpeed;
     randomNumberGenerator = Random();
     activeModeIndex = 0;
     frame = Frame();
@@ -90,11 +90,14 @@ class Decisioninator extends FlameGame
       _setUpButton(modeButtonLine, _switchMode);
     }
 
-    addAll([
+    await addAll([
       ..._modes[activeModeIndex!],
       frame,
       collisionLine,
     ]);
+
+    machineState = MachineState.attract;
+    spinVelocity = Configuration.attractVelocity;
   }
 
   @override
