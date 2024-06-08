@@ -121,7 +121,8 @@ class Decisioninator extends FlameGame
         newSpinVelocity = Configuration.spinLoadingSpeed;
     }
 
-    if (newSpinVelocity < Configuration.minimumSpeedToBeConsideredSpinning) {
+    if (newSpinVelocity < Configuration.minimumSpeedToBeConsideredSpinning &&
+        machineState != MachineState.loading) {
       _showResult();
       newSpinVelocity = Configuration.spinResultSpeed;
     }
@@ -395,6 +396,8 @@ class Decisioninator extends FlameGame
   void _switchMode() async {
     if (machineState == MachineState.attract && !modeDebounceActive) {
       modeDebounceActive = true;
+      machineState == MachineState.loading;
+      spinVelocity = Configuration.spinLoadingSpeed;
 
       removeAll([
         ..._modes[activeModeIndex!],
@@ -408,7 +411,7 @@ class Decisioninator extends FlameGame
         activeModeIndex = activeModeIndex! + 1;
       }
 
-      addAll([
+      await addAll([
         ..._modes[activeModeIndex!],
         frame,
         collisionLine,
@@ -417,6 +420,8 @@ class Decisioninator extends FlameGame
       await Future.delayed(const Duration(milliseconds: 500), () {
         modeDebounceActive = false;
       });
+
+      machineState == MachineState.attract;
     }
   }
 
