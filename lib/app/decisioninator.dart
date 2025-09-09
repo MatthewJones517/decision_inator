@@ -30,7 +30,7 @@ class Decisioninator extends FlameGame
   bool modeDebounceActive = false;
 
   // Turn off for testing
-  bool gpioEnabled = true;
+  bool gpioEnabled = false;
 
   late final List<List<DecisionatorOption>> _modes;
   late final Random randomNumberGenerator;
